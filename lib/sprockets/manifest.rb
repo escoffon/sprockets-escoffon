@@ -171,7 +171,7 @@ module Sprockets
         assets_to_export << asset
       end
 
-#      print("++++++++++ assets to export:\n")
+      print("++++++++++ Manifest.compile assets to export:\n")
       assets_to_export.each do |asset|
         mtime = Time.now.iso8601
         files[asset.digest_path] = {
@@ -185,7 +185,7 @@ module Sprockets
           # digest themselves.
           'integrity'    => DigestUtils.hexdigest_integrity_uri(asset.hexdigest)
         }
-#        print("  ++++++++ #{files[asset.digest_path]} - #{asset.digest_path}\n")
+        print("  ++++++++ #{files[asset.digest_path]} - #{asset.digest_path}\n")
         assets[asset.logical_path] = asset.digest_path
 
         filenames << asset.filename
@@ -225,6 +225,7 @@ module Sprockets
       gzip = "#{path}.gz"
       logical_path = files[filename]['logical_path']
 
+      print("++++++++++ Manifest #{self} remove filename: #{filename} logical path: #{logical_path}\n")
       if assets[logical_path] == filename
         assets.delete(logical_path)
       end

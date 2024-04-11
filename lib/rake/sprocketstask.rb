@@ -118,7 +118,21 @@ module Rake
       desc name == :assets ? "Compile assets" : "Compile #{name} assets"
       task name do
         with_logger do
-          manifest.compile(assets)
+          #++ manifest.compile(assets)
+          #++ START
+          filenames = manifest.compile(assets)
+          print("++++++++++ assets task ran manifest.compile, filenames:\n")
+          if filenames.is_a?(Array)
+            filenames.each do |fn|
+              stat = File.stat(fn)
+              if (stat.is_a?(File::Stat))
+                print("  ++++++++ #{fn} ftype: #{stat.ftype}\n")
+              else
+                print("  ++++++++ #{fn} File.stat failed\n")
+              end
+            end
+          end
+          #++ END
         end
       end
 
