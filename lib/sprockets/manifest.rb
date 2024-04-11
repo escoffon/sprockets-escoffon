@@ -171,6 +171,7 @@ module Sprockets
         assets_to_export << asset
       end
 
+#      print("++++++++++ assets to export:\n")
       assets_to_export.each do |asset|
         mtime = Time.now.iso8601
         files[asset.digest_path] = {
@@ -184,18 +185,23 @@ module Sprockets
           # digest themselves.
           'integrity'    => DigestUtils.hexdigest_integrity_uri(asset.hexdigest)
         }
+#        print("  ++++++++ #{files[asset.digest_path]} - #{asset.digest_path}\n")
         assets[asset.logical_path] = asset.digest_path
 
         filenames << asset.filename
 
         promise      = nil
+ #       print("  ++++++++ exporters:\n")
         exporters_for_asset(asset) do |exporter|
+#          print("    ++++++ #{exporter} - #{exporter.skip?(logger)}\n")
           next if exporter.skip?(logger)
 
           if promise.nil?
+#            print("    ++++++ #{exporter} - create promise\n")
             promise = Concurrent::Promise.new(executor: executor) { exporter.call }
             concurrent_exporters << promise.execute
           else
+#            print("    ++++++ #{exporter} - push exporter\n")
             concurrent_exporters << promise.then { exporter.call }
           end
         end
@@ -205,6 +211,7 @@ module Sprockets
       concurrent_exporters.each(&:wait!)
       save
 
+  #    print("  ++++++++ filenames: #{filenames}\n")
       filenames
     end
 

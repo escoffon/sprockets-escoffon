@@ -61,6 +61,7 @@ module Sprockets
       # `filename`. Defaults to the `target`. Method
       # is safe to use in forked or threaded environments.
       def write(filename = target)
+        print("++++++++++ Exporter::Base write - #{filename}\n")
         FileUtils.mkdir_p File.dirname(filename)
         PathUtils.atomic_write(filename) do |f|
           yield f

@@ -15,9 +15,12 @@ module Sprockets
       end
 
       def call
+        print("++++++++++ FileExporter call - #{target}\n")
         write(target) do |file|
           file.write(asset.source)
         end
+        print("  ++++++++ FileExporter call - did write\n")
+        print("  ++++++++ FileExporter call - stat: #{PathUtils.stat(target)}\n")
       end
     end
   end
