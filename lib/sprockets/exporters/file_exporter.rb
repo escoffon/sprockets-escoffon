@@ -15,19 +15,20 @@ module Sprockets
       end
 
       def call
-        begin
+        #begin
         print("++++++++++ FileExporter #{self} call - #{target}\n")
         write(target) do |file|
+          print("++++++++++ FileExporter #{self} will write - #{target}\n")
           file.write(asset.source)
         end
-        print("  ++++++++ FileExporter #{self} call - did write\n")
-        fstat = PathUtils.stat(target) # ++++ to catch it in a search
-        print("  ++++++++ FileExporter #{self} call - stat: #{fstat}\n")
-        print("  ++++++++ FileExporter #{self} call - ftype: #{fstat.ftype}\n") if !fstat.nil?
-        rescue StandarError => exc
-          print("  ++++++++ FileExporter #{self} call - exception: ${exc.message}\n")
-          raise
-        end
+        #print("  ++++++++ FileExporter #{self} call - did write\n")
+        #fstat = PathUtils.stat(target) # ++++ to catch it in a search
+        #print("  ++++++++ FileExporter #{self} call - stat: #{fstat}\n")
+        #print("  ++++++++ FileExporter #{self} call - ftype: #{fstat.ftype}\n") if !fstat.nil?
+        #rescue StandarError => exc
+        #  print("  ++++++++ FileExporter #{self} call - exception: ${exc.message}\n")
+        #  raise
+        #end
       end
     end
   end

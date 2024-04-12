@@ -38,6 +38,9 @@ module Sprockets
         uri = build_asset_uri(filename, type: type, pipeline: pipeline || path_pipeline, index_alias: index_alias)
       end
 
+#      print("++++++++++ Resolve resolve path: #{path} load_paths: #{load_paths} -> #{uri} / #{deps}\n")
+#      print("++++++++++ Resolve resolve path: #{path} -> #{uri} / #{deps}\n")
+      print("++++++++++ Resolve resolve path: #{path} -> #{uri}\n")
       return uri, deps
     end
 

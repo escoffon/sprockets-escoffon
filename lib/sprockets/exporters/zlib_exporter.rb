@@ -24,19 +24,20 @@ module Sprockets
       end
 
       def call
-        begin
+        #begin
         print("++++++++++ ZlibExporter #{self} call - #{target}\n")
         write(@gzip_target) do |file|
+          print("++++++++++ ZlibExporter #{self} will compress - #{target}\n")
           @gzip.compress(file, target)
         end
-        print("  ++++++++ ZlibExporter #{self} call - did write\n")
-        fstat = PathUtils.stat(target) # ++++ to catch it in a search
-        print("  ++++++++ ZlibExporter #{self} call - stat: #{fstat}\n")
-        print("  ++++++++ ZlibExporter #{self} call - ftype: #{fstat.ftype}\n") if !fstat.nil?
-        rescue StandarError => exc
-          print("  ++++++++ ZlibExporter #{self} call - exception: ${exc.message}\n")
-          raise
-        end
+        #print("  ++++++++ ZlibExporter #{self} call - did write\n")
+        #fstat = PathUtils.stat(target) # ++++ to catch it in a search
+        #print("  ++++++++ ZlibExporter #{self} call - stat: #{fstat}\n")
+        #print("  ++++++++ ZlibExporter #{self} call - ftype: #{fstat.ftype}\n") if !fstat.nil?
+        #rescue StandarError => exc
+        #  print("  ++++++++ ZlibExporter #{self} call - exception: ${exc.message}\n")
+        #  raise
+        #end
       end
     end
   end

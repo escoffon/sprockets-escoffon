@@ -120,14 +120,19 @@ module Sprockets
       return to_enum(__method__, *args) unless block_given?
 
       environment = self.environment.cached
+      print("++++++++++ Manifest.find (#{args.flatten})\n")
       promises = args.flatten.map do |path|
         Concurrent::Promise.execute(executor: executor) do
+          print("  ++++++++ Manifest.find will call find_all_linked_assets(#{path})\n")
           environment.find_all_linked_assets(path).to_a
         end
       end
 
+      print("++++++++++ Manifest.find iterate promises\n")
       promises.each do |promise|
+        print("  ++++++++ Manifest.find will process #{promise.value!}\n")
         promise.value!.each(&block)
+        print("  ++++++++ Manifest.find did process #{promise.value!}\n")
       end
 
       nil
@@ -163,15 +168,17 @@ module Sprockets
         raise Error, "manifest requires environment for compilation"
       end
 
+      print("++++++++++ Manifest.compile (#{args})\n")
       filenames            = []
       concurrent_exporters = []
 
       assets_to_export = Concurrent::Array.new
       find(*args) do |asset|
+        print("++++++++++ Manifest.compile add asset to exports: #{asset.logical_path}\n")
         assets_to_export << asset
       end
 
-      print("++++++++++ Manifest.compile assets to export:\n")
+      print("++++++++++ Manifest.compile assets to export: #{assets_to_export.map { |asset| asset.logical_path }}\n")
       assets_to_export.each do |asset|
         mtime = Time.now.iso8601
         files[asset.digest_path] = {
@@ -185,7 +192,7 @@ module Sprockets
           # digest themselves.
           'integrity'    => DigestUtils.hexdigest_integrity_uri(asset.hexdigest)
         }
-        print("  ++++++++ #{files[asset.digest_path]} - #{asset.digest_path}\n")
+        print("  ++++++++ Manifest.compile asset #{files[asset.digest_path]} - #{asset.digest_path}\n")
         assets[asset.logical_path] = asset.digest_path
 
         filenames << asset.filename
